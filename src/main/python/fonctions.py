@@ -65,51 +65,6 @@ def get_token():
 
 
 ######################################################
-# Supprimer le pdf et le qrcode si existant
-######################################################
-
-def prepare_github(url, headers, username, repository, qrcode_path):
-    # Étape 1 : Supprimer le fichier PDF, s'il existe
-    # Obtenir le SHA du fichier PDF
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        sha_pdf = response.json()["sha"]
-        # Supprimer le fichier PDF avec le SHA
-        delete_data = {
-            "message": "Suppression de l'ancien PDF",
-            "sha": sha_pdf,
-            "content" : ""
-        }
-        response = requests.put(url, headers=headers, json=delete_data)
-        if response.status_code == 204:
-            print("Précédent PDF supprimé avec succès !")
-        else:
-            print("Erreur lors de la suppression du PDF :", response.json())
-    else:
-        print("Pas de PDF déjà existant.")
-
-    # Étape 2 : Supprimer le fichier QR code, s'il existe
-    # Obtenir le SHA du fichier QR code
-    url_qrcode = f"https://api.github.com/repos/{username}/{repository}/contents/{qrcode_path}"
-    response = requests.get(url_qrcode, headers=headers)
-    if response.status_code == 200:
-        sha_qrcode = response.json()["sha"]
-        # Supprimer le fichier QR code avec le SHA
-        delete_data = {
-            "message": "Suppression de l'ancien QR code",
-            "sha": sha_qrcode,
-            "content" : ""
-        }
-        response = requests.put(url_qrcode, headers=headers, json=delete_data)
-        if response.status_code == 204:
-            print("Précédent QR code supprimé avec succès !")
-        else:
-            print("Erreur lors de la suppression du QR code :", response.json())
-    else:
-        print("Pas de QR code déjà existant.")
-
-
-######################################################
 # Créer le qrcode
 ######################################################
 
