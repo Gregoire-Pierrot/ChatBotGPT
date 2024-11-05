@@ -1,0 +1,4 @@
+Env/
+.vscode/
+src/main/python/__pycache__
+src/main/python/github_token.txt
